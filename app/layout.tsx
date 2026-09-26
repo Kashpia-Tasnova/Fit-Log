@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "FitLog — Workout Library",
@@ -14,9 +16,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex min-h-screen flex-col">
+
+        {/* Navbar */}
         <Navbar />
-        {children}
+
+        {/* Page Content */}
+        <main className="flex-1">
+          {children}
+        </main>
+
+        {/* Footer */}
+        <Footer />
+
       </body>
     </html>
   );
