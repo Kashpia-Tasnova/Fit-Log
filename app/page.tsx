@@ -1,6 +1,6 @@
 import Image from "next/image";
 import bannerImage from "../assets/banner.png";
-
+import WorkoutLibrary from "@/components/WorkoutLibrary";
 export default function Home() {
   return (
     <main className="bg-[#0b0b0b] text-white">
@@ -27,28 +27,22 @@ export default function Home() {
               add up.
             </p>
 
-           <a
-  href="#library"
-  className="mt-7 inline-flex items-center gap-3 rounded-md bg-[#ccff00] px-5 py-3 text-xs font-black uppercase tracking-wide !text-black sm:px-6 sm:py-3.5 sm:text-sm"
->
-  Browse Workouts
+           <a href="#library" className="mt-7 inline-flex items-center gap-3 rounded-md bg-[#ccff00] px-5 py-3 text-xs font-black uppercase tracking-wide !text-black sm:px-6 sm:py-3.5 sm:text-sm">
+            Browse Workouts
  
-</a>
+              </a>
           </div>
 
           {/* Hero Image */}
           <div className="mx-auto w-full max-w-md overflow-hidden rounded-xl border border-[#292929] lg:max-w-lg">
-            <Image
-              src={bannerImage}
-              alt="FitLog workout banner"
-              priority
-              className="h-auto w-full object-cover"
-            />
+            <Image src={bannerImage} alt="FitLog workout banner" priority className="h-auto w-full object-cover"/>
           </div>
 
         </div>
 
       </section>
+       {/* Workout Library */}
+      <WorkoutLibrary />
 
     
     </main>
