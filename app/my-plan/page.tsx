@@ -18,7 +18,10 @@ import { useFitLog } from "@/context/FitLogContext";
 
 type Tab = "plan" | "saved";
 
-type SortOption = "duration" | "calories" | "rating";
+type SortOption =
+  | "duration"
+  | "calories"
+  | "rating";
 
 export default function MyPlanPage() {
   const {
@@ -28,9 +31,9 @@ export default function MyPlanPage() {
     removeFromSaved,
   } = useFitLog();
 
-  /* --------------------------------
-     GET ACTIVE TAB FROM URL
-     -------------------------------- */
+  /* =========================================
+     ACTIVE TAB
+     ========================================= */
 
   const searchParams = useSearchParams();
 
@@ -39,23 +42,29 @@ export default function MyPlanPage() {
       ? "saved"
       : "plan";
 
-  /* --------------------------------
-     SORT
-     -------------------------------- */
+  /* =========================================
+     SORTING
+     ========================================= */
+
+  /*
+   * null means:
+   * Do not sort.
+   * Keep the original added order.
+   */
 
   const [sortBy, setSortBy] =
-    useState<SortOption>("duration");
+    useState<SortOption | null>(null);
 
-  /* --------------------------------
+  /* =========================================
      COMPLETED WORKOUTS
-     -------------------------------- */
+     ========================================= */
 
   const [completed, setCompleted] =
     useState<number[]>([]);
 
-  /* --------------------------------
+  /* =========================================
      TOAST
-     -------------------------------- */
+     ========================================= */
 
   const [toast, setToast] = useState("");
 
@@ -74,21 +83,44 @@ export default function MyPlanPage() {
     }, 2500);
   };
 
-  /* --------------------------------
-     CURRENT WORKOUTS
-     -------------------------------- */
+  /* =========================================
+     WORKOUT LIST + SORTING
+     ========================================= */
 
   const currentWorkouts = useMemo(() => {
+    /*
+     * First copy the workouts.
+     *
+     * If no sort option is selected,
+     * this array keeps the exact order
+     * in which workouts were added.
+     */
+
     const workouts =
       activeTab === "plan"
         ? [...plan]
         : [...saved];
 
+    /*
+     * DURATION
+     *
+     * Ascending:
+     * shortest → longest
+     */
+
     if (sortBy === "duration") {
       workouts.sort(
-        (a, b) => a.duration - b.duration
+        (a, b) =>
+          a.duration - b.duration
       );
     }
+
+    /*
+     * CALORIES
+     *
+     * Ascending:
+     * lowest → highest
+     */
 
     if (sortBy === "calories") {
       workouts.sort(
@@ -98,9 +130,17 @@ export default function MyPlanPage() {
       );
     }
 
+    /*
+     * RATING
+     *
+     * Ascending:
+     * lowest → highest
+     */
+
     if (sortBy === "rating") {
       workouts.sort(
-        (a, b) => b.rating - a.rating
+        (a, b) =>
+          a.rating - b.rating
       );
     }
 
@@ -112,9 +152,14 @@ export default function MyPlanPage() {
     sortBy,
   ]);
 
-  /* --------------------------------
+  /* =========================================
      METRICS
-     -------------------------------- */
+     ========================================= */
+
+  /*
+   * Metrics always use the actual
+   * Plan/Saved list, not the sorted copy.
+   */
 
   const displayedWorkouts =
     activeTab === "plan"
@@ -135,14 +180,19 @@ export default function MyPlanPage() {
       0
     );
 
-  /* --------------------------------
+  /* =========================================
      MARK AS DONE
-     -------------------------------- */
+     ========================================= */
 
   const handleDone = (
     workoutId: number
   ) => {
     setCompleted((current) => {
+      /*
+       * If already completed,
+       * clicking again will undo it.
+       */
+
       if (current.includes(workoutId)) {
         return current.filter(
           (id) => id !== workoutId
@@ -160,14 +210,19 @@ export default function MyPlanPage() {
     );
   };
 
-  /* --------------------------------
+  /* =========================================
      REMOVE FROM PLAN
-     -------------------------------- */
+     ========================================= */
 
   const handleRemovePlan = (
     workoutId: number
   ) => {
     removeFromPlan(workoutId);
+
+    /*
+     * Also remove it from completed
+     * if it was marked as done.
+     */
 
     setCompleted((current) =>
       current.filter(
@@ -181,9 +236,9 @@ export default function MyPlanPage() {
     );
   };
 
-  /* --------------------------------
+  /* =========================================
      REMOVE FROM SAVED
-     -------------------------------- */
+     ========================================= */
 
   const handleRemoveSaved = (
     workoutId: number
@@ -201,9 +256,9 @@ export default function MyPlanPage() {
 
       <section className="mx-auto w-full max-w-[1184px] px-6 pb-20 pt-11 sm:px-8 lg:px-0">
 
-        {/* =========================================
+        {/* =====================================
             PAGE HEADER
-            ========================================= */}
+            ===================================== */}
 
         <div>
           <h1 className="text-[28px] font-black uppercase leading-none tracking-[-0.02em] sm:text-[30px]">
@@ -216,9 +271,9 @@ export default function MyPlanPage() {
           </p>
         </div>
 
-        {/* =========================================
+        {/* =====================================
             METRICS
-            ========================================= */}
+            ===================================== */}
 
         <div className="mt-6 flex min-h-[122px] w-full items-center rounded-[15px] border border-[#29303b] bg-[#14171d] px-6 sm:px-8">
 
@@ -270,15 +325,15 @@ export default function MyPlanPage() {
 
         </div>
 
-        {/* =========================================
+        {/* =====================================
             TABS + SORT
-            ========================================= */}
+            ===================================== */}
 
         <div className="mt-8 flex items-center justify-between gap-4">
 
-          {/* -----------------------------------------
-              TABS CONTAINER
-              ----------------------------------------- */}
+          {/* ===================================
+              PLAN / SAVED TABS
+              =================================== */}
 
           <div className="flex h-[40px] items-center rounded-[8px] border border-[#29303b] bg-[#14171d] p-[3px]">
 
@@ -314,9 +369,9 @@ export default function MyPlanPage() {
 
           </div>
 
-          {/* -----------------------------------------
-              SORT
-              ----------------------------------------- */}
+          {/* ===================================
+              SORT DROPDOWN
+              =================================== */}
 
           <div className="flex items-center gap-2">
 
@@ -327,15 +382,30 @@ export default function MyPlanPage() {
             <div className="relative">
 
               <select
-                value={sortBy}
-                onChange={(e) =>
+                value={sortBy ?? ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  if (!value) {
+                    setSortBy(null);
+                    return;
+                  }
+
                   setSortBy(
-                    e.target
-                      .value as SortOption
-                  )
-                }
-                className="h-[36px] appearance-none rounded-[8px] border border-[#29303b] bg-[#14171d] pl-3 pr-9 text-[12px] text-white outline-none transition focus:border-[#ccff00]"
+                    value as SortOption
+                  );
+                }}
+                className="h-[36px] appearance-none rounded-[8px] border border-[#29303b] bg-[#14171d] pl-3 pr-9 text-[12px] text-white outline-none transition hover:border-[#3b4350] focus:border-[#ccff00]"
               >
+
+                {/* DEFAULT */}
+
+                <option value="">
+                  Sort By
+                </option>
+
+                {/* OPTIONS */}
+
                 <option value="duration">
                   Duration
                 </option>
@@ -347,9 +417,12 @@ export default function MyPlanPage() {
                 <option value="rating">
                   Rating
                 </option>
+
               </select>
 
-              <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#8f96a3]" />
+              <ChevronDown
+                className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#8f96a3]"
+              />
 
             </div>
 
@@ -357,9 +430,9 @@ export default function MyPlanPage() {
 
         </div>
 
-        {/* =========================================
+        {/* =====================================
             EMPTY STATE
-            ========================================= */}
+            ===================================== */}
 
         {currentWorkouts.length === 0 && (
           <div className="mt-6 flex min-h-[240px] flex-col items-center justify-center rounded-[14px] border border-dashed border-[#29303b] bg-[#14171d] px-6 text-center">
@@ -385,9 +458,9 @@ export default function MyPlanPage() {
           </div>
         )}
 
-        {/* =========================================
+        {/* =====================================
             WORKOUT LIST
-            ========================================= */}
+            ===================================== */}
 
         {currentWorkouts.length > 0 && (
           <div className="mt-6 space-y-4">
@@ -410,7 +483,9 @@ export default function MyPlanPage() {
                     }`}
                   >
 
-                    {/* IMAGE */}
+                    {/* =================================
+                        WORKOUT IMAGE
+                        ================================= */}
 
                     <div className="relative h-[80px] w-[145px] shrink-0 overflow-hidden rounded-[10px] bg-[#20242b]">
 
@@ -428,7 +503,9 @@ export default function MyPlanPage() {
 
                     </div>
 
-                    {/* INFORMATION */}
+                    {/* =================================
+                        WORKOUT INFORMATION
+                        ================================= */}
 
                     <div className="ml-4 min-w-0 flex-1">
 
@@ -490,7 +567,9 @@ export default function MyPlanPage() {
 
                     </div>
 
-                    {/* ACTIONS */}
+                    {/* =================================
+                        ACTION BUTTONS
+                        ================================= */}
 
                     <div className="ml-4 flex shrink-0 items-center gap-3">
 
@@ -562,9 +641,9 @@ export default function MyPlanPage() {
 
       </section>
 
-      {/* =========================================
-          TOAST
-          ========================================= */}
+      {/* =====================================
+          TOAST MESSAGE
+          ===================================== */}
 
       {toast && (
         <div className="fixed right-5 top-[88px] z-[100] flex items-center gap-3 rounded-[8px] border border-[#29303b] bg-[#181b21] px-5 py-3 shadow-2xl sm:right-8">
