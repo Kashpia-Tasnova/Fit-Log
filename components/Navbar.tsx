@@ -11,16 +11,17 @@ import { useFitLog } from "@/context/FitLogContext";
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+
   const { plan, saved } = useFitLog();
 
-  // Workout is active on Home and individual workout pages
   const isWorkoutPage =
     pathname === "/" || pathname.startsWith("/workout/");
 
   const isMyPlanPage = pathname === "/my-plan";
 
-  // Go to Workout Library
-  const handleWorkoutClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleWorkoutClick = (
+    e: React.MouseEvent<HTMLAnchorElement>
+  ) => {
     e.preventDefault();
 
     if (pathname === "/") {
@@ -37,9 +38,11 @@ export default function Navbar() {
     }
   };
 
-  // When coming from another page to /#library
   useEffect(() => {
-    if (pathname === "/" && window.location.hash === "#library") {
+    if (
+      pathname === "/" &&
+      window.location.hash === "#library"
+    ) {
       const library = document.getElementById("library");
 
       if (library) {
@@ -54,10 +57,10 @@ export default function Navbar() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#292929] bg-[#0b0b0b]">
-      <nav className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-[#222222] bg-[#0b0b0b]/95 backdrop-blur">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6 lg:px-8">
 
-        {/* Logo */}
+        {/* LOGO */}
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2"
@@ -71,75 +74,78 @@ export default function Navbar() {
             priority
           />
 
-        <span className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
-  FITLOG
-</span>
-          
+          <span className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+            FITLOG
+          </span>
         </Link>
 
-        {/* Main Navigation */}
-        <div className="flex items-center gap-4 sm:gap-6 lg:gap-10">
+        {/* MAIN NAVIGATION */}
+        <nav className="flex items-center gap-5 sm:gap-8">
 
-         {/* Workouts */}
-<Link
-  href="/#library"
-  onClick={handleWorkoutClick}
-  style={{
-    color: isWorkoutPage ? "#ccff00" : "#a1a1a1",
-  }}
-  className="text-xs font-bold tracking-wider transition hover:text-[#ccff00] sm:text-sm"
->
-  Workouts
-</Link>
+          {/* WORKOUTS */}
+          <a
+            href="/#library"
+            onClick={handleWorkoutClick}
+            className="text-xs font-bold tracking-wider transition sm:text-sm"
+            style={{
+              color: isWorkoutPage
+                ? "#ccff00"
+                : "#a1a1a1",
+            }}
+          >
+            Workouts
+          </a>
 
-{/* My Plan */}
-<Link
-  href="/my-plan"
-  style={{
-    color: isMyPlanPage ? "#ccff00" : "#a1a1a1",
-  }}
-  className="text-xs font-bold tracking-wider transition hover:text-[#ccff00] sm:text-sm"
->
-  My Plan
-</Link>
+          {/* MY PLAN */}
+          <Link
+            href="/my-plan"
+            className="text-xs font-bold tracking-wider transition sm:text-sm"
+            style={{
+              color: isMyPlanPage
+                ? "#ccff00"
+                : "#a1a1a1",
+            }}
+          >
+            My Plan
+          </Link>
+
+        </nav>
+
+        {/* PLAN + SAVED */}
+        <div className="flex shrink-0 items-center gap-4">
+
+          {/* PLAN */}
+
+          <Link
+            href="/my-plan"
+            className="flex items-center gap-2 text-xs font-bold tracking-wider sm:text-sm"
+          >
+            <span className="text-[#a1a1a1]">
+              Plan
+            </span>
+
+            <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#ccff00] px-1.5 text-xs font-bold !text-black">
+              {plan.length}
+            </span>
+          </Link>
+
+          {/* SAVED */}
+
+          <Link
+            href="/my-plan?tab=saved"
+            className="flex items-center gap-2 text-xs font-bold tracking-wider sm:text-sm"
+          >
+            <span className="text-[#a1a1a1]">
+              Saved
+            </span>
+
+            <span className="flex h-6 min-w-6 items-center justify-center rounded-full border border-[#a1a1a1] bg-[#0b0b0b] px-1.5 text-xs font-bold !text-[#a1a1a1]">
+              {saved.length}
+            </span>
+          </Link>
 
         </div>
-
-  {/* Plan / Saved */}
-<div className="flex shrink-0 items-center gap-4">
-
-  {/* Plan */}
-  <Link
-    href="/my-plan"
-    className="flex items-center gap-2 text-xs font-bold tracking-wider sm:text-sm"
-  >
-    <span className="text-[#a1a1a1]">
-      Plan
-    </span>
-
-    {/* Plan Number */}
-    <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#ccff00] px-1.5 text-xs font-bold text-black">
-      {plan.length}
-    </span>
-  </Link>
-
-  {/* Saved */}
-  <Link
-    href="/my-plan"
-    className="flex items-center gap-2 text-xs font-bold tracking-wider sm:text-sm"
-  >
-    <span className="text-[#a1a1a1]">
-      Saved
-    </span>
-
-    {/* Saved Number */}
-    <span className="text-[#a1a1a1]">
-      {saved.length}
-    </span>
-  </Link>
-
-</div>
-      </nav>
+      </div>
     </header>
   );
 }
