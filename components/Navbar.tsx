@@ -20,9 +20,7 @@ export default function Navbar() {
   const isMyPlanPage =
     pathname === "/my-plan";
 
-  /* =========================================
-     WORKOUTS NAVIGATION
-     ========================================= */
+  /*  WORKOUTS NAVIGATION */
 
   const handleWorkoutClick = (
     e: React.MouseEvent<HTMLAnchorElement>
@@ -44,9 +42,7 @@ export default function Navbar() {
     }
   };
 
-  /* =========================================
-     HANDLE /#library ON PAGE LOAD
-     ========================================= */
+  /*  HANDLE /#library ON PAGE LOAD */
 
   useEffect(() => {
     if (
@@ -72,31 +68,20 @@ export default function Navbar() {
 
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:gap-5 sm:px-6 lg:gap-6 lg:px-8">
 
-        {/* =====================================
-            LOGO
-            ===================================== */}
+        {/* LOGO */}
 
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2"
         >
-          <Image
-            src={logoImage}
-            alt="FitLog Logo"
-            width={28}
-            height={28}
-            className="h-7 w-7 object-contain"
-            priority
-          />
+          <Image src={logoImage} alt="FitLog Logo" width={28} height={28} className="h-7 w-7 object-contain" priority />
 
           <span className="text-lg font-semibold tracking-tight text-white sm:text-xl lg:text-2xl">
             FITLOG
           </span>
         </Link>
 
-        {/* =====================================
-            MAIN NAVIGATION
-            ===================================== */}
+        {/*  MAIN NAVIGATION */}
 
         <nav className="flex items-center gap-4 sm:gap-7 lg:gap-8">
 

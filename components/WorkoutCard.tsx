@@ -21,16 +21,12 @@ export default function WorkoutCard({
       className="group block overflow-hidden rounded-xl border border-[#292929] bg-[#151515] transition duration-300 hover:-translate-y-1 hover:border-[#ccff00]"
     >
 
-      {/* =====================================
-          WORKOUT IMAGE
-          ===================================== */}
+      {/*  WORKOUT IMAGE */}
 
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#111111]">
 
         <Image
-          src={workout.image}
-          alt={workout.name}
-          fill
+          src={workout.image} alt={workout.name} fill
           className="object-cover transition duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
@@ -43,9 +39,7 @@ export default function WorkoutCard({
 
       <div className="p-4 sm:p-5">
 
-        {/* ===================================
-            MUSCLE GROUPS
-            =================================== */}
+        {/* MUSCLE GROUPS */}
 
         <div className="mb-3 flex flex-wrap gap-1.5 sm:mb-4 sm:gap-2">
 
@@ -62,25 +56,19 @@ export default function WorkoutCard({
 
         </div>
 
-        {/* ===================================
-            WORKOUT NAME
-            =================================== */}
+        {/*  WORKOUT NAME */}
 
         <h3 className="text-base font-black uppercase leading-tight tracking-wide text-white sm:text-lg">
           {workout.name}
         </h3>
 
-        {/* ===================================
-            EQUIPMENT
-            =================================== */}
+        {/*   EQUIPMENT */}
 
         <p className="mt-1.5 text-xs text-[#a1a1a1] sm:mt-2 sm:text-sm">
           {workout.equipment}
         </p>
 
-        {/* ===================================
-            STATS
-            =================================== */}
+        {/* STATS */}
 
         <div className="mt-4 flex items-center justify-between border-t border-[#292929] pt-3 sm:mt-5 sm:pt-4">
 

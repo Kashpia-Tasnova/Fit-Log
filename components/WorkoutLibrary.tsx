@@ -17,9 +17,7 @@ export default function WorkoutLibrary() {
   const [error, setError] =
     useState("");
 
-  /* =========================================
-     FETCH WORKOUTS
-     ========================================= */
+  /* FETCH WORKOUTS */
 
   useEffect(() => {
     async function fetchWorkouts() {
@@ -60,9 +58,7 @@ export default function WorkoutLibrary() {
       className="mx-auto w-full max-w-7xl scroll-mt-20 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-28"
     >
 
-      {/* =====================================
-          SECTION HEADER
-          ===================================== */}
+      {/* SECTION HEADER */}
 
       <div className="mb-8 sm:mb-10 lg:mb-14">
 
@@ -85,9 +81,7 @@ export default function WorkoutLibrary() {
 
       </div>
 
-      {/* =====================================
-          LOADING
-          ===================================== */}
+      {/*  LOADING */}
 
       {loading && (
         <div className="flex min-h-[260px] items-center justify-center sm:min-h-[300px]">
@@ -105,9 +99,7 @@ export default function WorkoutLibrary() {
         </div>
       )}
 
-      {/* =====================================
-          ERROR
-          ===================================== */}
+      {/* ERROR  */}
 
       {!loading && error && (
         <div className="flex min-h-[220px] items-center justify-center rounded-xl border border-[#292929] bg-[#151515] px-5 text-center sm:min-h-[250px]">
@@ -119,9 +111,7 @@ export default function WorkoutLibrary() {
         </div>
       )}
 
-      {/* =====================================
-          WORKOUT GRID
-          ===================================== */}
+      {/* WORKOUT GRID*/}
 
       {!loading && !error && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">

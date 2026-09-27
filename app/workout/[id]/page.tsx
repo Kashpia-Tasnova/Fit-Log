@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
@@ -94,9 +93,7 @@ export default function WorkoutDetailsPage({
     fetchWorkout();
   }, [params]);
 
-  /* ==================================
-     ADD TO PLAN
-  ================================== */
+  /*  ADD TO PLAN */
 
   const handleAddToPlan = () => {
     if (!workout) return;
@@ -136,9 +133,7 @@ export default function WorkoutDetailsPage({
     }, 2500);
   };
 
-  /* ==================================
-     SAVE WORKOUT
-  ================================== */
+  /* SAVE WORKOUT */
 
   const handleSave = () => {
     if (!workout) return;
@@ -172,9 +167,7 @@ export default function WorkoutDetailsPage({
     }, 2500);
   };
 
-  /* ==================================
-     LOADING STATE
-  ================================== */
+  /*   LOADING STATE */
 
   if (loading) {
     return (
@@ -235,14 +228,7 @@ export default function WorkoutDetailsPage({
 
             <div className="relative aspect-[4/5] w-full">
 
-              <Image
-                src={workout.image}
-                alt={workout.name}
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+              <Image src={workout.image} alt={workout.name} fill priority className="object-cover"sizes="(max-width: 1024px) 100vw, 50vw" />
 
             </div>
 
@@ -389,9 +375,7 @@ export default function WorkoutDetailsPage({
 
             </div>
 
-            {/* ==================================
-                INSTRUCTIONS
-            ================================== */}
+            {/* INSTRUCTIONS */}
 
             <div className="mt-8">
 
@@ -424,9 +408,7 @@ export default function WorkoutDetailsPage({
 
             </div>
 
-            {/* ==================================
-                ACTION BUTTONS
-            ================================== */}
+            {/* ACTION BUTTONS */}
 
             <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
 
@@ -449,7 +431,7 @@ export default function WorkoutDetailsPage({
                 ) : (
                   <>
                     <CalendarPlus className="h-4 w-4" />
-                    Add to today&apos;s plan
+                    Add to today's plan
                   </>
                 )}
               </button>
@@ -485,9 +467,7 @@ export default function WorkoutDetailsPage({
 
       </section>
 
-      {/* ==================================
-          PLAN TOAST
-      ================================== */}
+      {/*   PLAN TOAST*/}
 
       {planMessage && (
         <div className="fixed right-3 top-[88px] z-[100] flex max-w-[calc(100vw-24px)] items-center gap-3 rounded-lg bg-[#1a1d24] px-4 py-3 shadow-xl sm:right-6 sm:max-w-md sm:px-5">
@@ -505,9 +485,7 @@ export default function WorkoutDetailsPage({
         </div>
       )}
 
-      {/* ==================================
-          SAVED TOAST
-      ================================== */}
+      {/*    SAVED TOAST */}
 
       {savedMessage && (
         <div className="fixed right-3 top-[88px] z-[100] flex max-w-[calc(100vw-24px)] items-center gap-3 rounded-lg bg-[#1a1d24] px-4 py-3 shadow-xl sm:right-6 sm:max-w-md sm:px-5">

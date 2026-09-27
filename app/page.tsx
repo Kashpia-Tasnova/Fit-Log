@@ -36,8 +36,8 @@ export default function Home() {
 
             <p className="mt-5 max-w-lg text-sm leading-6 text-[#a1a1a1] sm:text-base sm:leading-7">
               FitLog is a dark, no-nonsense gym companion:
-              pick a lift, lock it into today&apos;s plan,
-              and watch the week&apos;s work add up.
+              pick a lift, lock it into today's plan,
+              and watch the week's work add up.
             </p>
 
             {/* CTA */}

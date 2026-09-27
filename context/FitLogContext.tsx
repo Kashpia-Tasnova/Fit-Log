@@ -33,15 +33,13 @@ export function FitLogProvider({
 }: {
   children: ReactNode;
 }) {
-  // IMPORTANT:
-  // Always start with empty arrays.
-  // This makes server and client render the same HTML.
+  
   const [plan, setPlan] = useState<Workout[]>([]);
   const [saved, setSaved] = useState<Workout[]>([]);
 
-  // ============================================================
+  
   // LOAD DATA FROM LOCAL STORAGE AFTER CLIENT MOUNTS
-  // ============================================================
+ 
 
   useEffect(() => {
     try {
@@ -64,9 +62,9 @@ export function FitLogProvider({
     }
   }, []);
 
-  // ============================================================
+  
   // ADD TO TODAY'S PLAN
-  // ============================================================
+
 
   const addToPlan = (workout: Workout) => {
   const alreadyExists = plan.some(
@@ -95,9 +93,9 @@ export function FitLogProvider({
   return true;
 };
 
-  // ============================================================
+  
   // REMOVE FROM TODAY'S PLAN
-  // ============================================================
+  
 
   const removeFromPlan = (workoutId: number) => {
     const updatedPlan = plan.filter(
@@ -112,9 +110,9 @@ export function FitLogProvider({
     );
   };
 
-  // ============================================================
+  
   // SAVE FOR LATER
-  // ============================================================
+ 
 
   const saveWorkout = (workout: Workout) => {
     const alreadyExists = saved.some(
@@ -137,10 +135,9 @@ export function FitLogProvider({
     return true;
   };
 
-  // ============================================================
+  
   // REMOVE FROM SAVED
-  // ============================================================
-
+  
   const removeFromSaved = (workoutId: number) => {
     const updatedSaved = saved.filter(
       (item) => item.id !== workoutId
@@ -154,9 +151,9 @@ export function FitLogProvider({
     );
   };
 
-  // ============================================================
+ 
   // CHECK IF IN PLAN
-  // ============================================================
+
 
   const isInPlan = (workoutId: number) => {
     return plan.some(
@@ -164,19 +161,17 @@ export function FitLogProvider({
     );
   };
 
-  // ============================================================
   // CHECK IF SAVED
-  // ============================================================
-
+  
   const isSaved = (workoutId: number) => {
     return saved.some(
       (item) => item.id === workoutId
     );
   };
 
-  // ============================================================
+  
   // PROVIDER
-  // ============================================================
+
 
   return (
     <FitLogContext.Provider
@@ -199,9 +194,9 @@ export function FitLogProvider({
   );
 }
 
-// ============================================================
+
 // CUSTOM HOOK
-// ============================================================
+
 
 export function useFitLog() {
   const context = useContext(FitLogContext);
