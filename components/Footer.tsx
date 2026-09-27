@@ -8,13 +8,7 @@ export default function Footer() {
 
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <Image
-            src={logoImage}
-            alt="FitLog Logo"
-            width={22}
-            height={22}
-            className="h-5 w-5 object-contain"
-          />
+          <Image src={logoImage} alt="FitLog Logo" width={22} height={22} className="h-5 w-5 object-contain" />
 
           <span className="text-base font-semibold tracking-tight text-white sm:text-lg">
             FITLOG
