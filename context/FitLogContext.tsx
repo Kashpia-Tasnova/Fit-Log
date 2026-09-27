@@ -14,10 +14,10 @@ interface FitLogContextType {
   plan: Workout[];
   saved: Workout[];
 
-  addToPlan: (workout: Workout) => void;
+  addToPlan: (workout: Workout) => boolean;
   removeFromPlan: (workoutId: number) => void;
 
-  saveWorkout: (workout: Workout) => void;
+  saveWorkout: (workout: Workout) => boolean;
   removeFromSaved: (workoutId: number) => void;
 
   isInPlan: (workoutId: number) => boolean;
@@ -33,96 +33,163 @@ export function FitLogProvider({
 }: {
   children: ReactNode;
 }) {
+  // IMPORTANT:
+  // Always start with empty arrays.
+  // This makes server and client render the same HTML.
   const [plan, setPlan] = useState<Workout[]>([]);
   const [saved, setSaved] = useState<Workout[]>([]);
 
-  // Load data from localStorage
+  // ============================================================
+  // LOAD DATA FROM LOCAL STORAGE AFTER CLIENT MOUNTS
+  // ============================================================
+
   useEffect(() => {
-    const storedPlan = localStorage.getItem("fitlog-plan");
-    const storedSaved = localStorage.getItem("fitlog-saved");
+    try {
+      const storedPlan = localStorage.getItem("fitlog-plan");
 
-    if (storedPlan) {
-      setPlan(JSON.parse(storedPlan));
-    }
+      if (storedPlan) {
+        setPlan(JSON.parse(storedPlan));
+      }
 
-    if (storedSaved) {
-      setSaved(JSON.parse(storedSaved));
+      const storedSaved = localStorage.getItem("fitlog-saved");
+
+      if (storedSaved) {
+        setSaved(JSON.parse(storedSaved));
+      }
+    } catch (error) {
+      console.error(
+        "Failed to load FitLog data from localStorage:",
+        error
+      );
     }
   }, []);
 
-  // Save plan to localStorage
-  useEffect(() => {
-    localStorage.setItem("fitlog-plan", JSON.stringify(plan));
-  }, [plan]);
+  // ============================================================
+  // ADD TO TODAY'S PLAN
+  // ============================================================
 
-  // Save saved workouts to localStorage
-  useEffect(() => {
-    localStorage.setItem("fitlog-saved", JSON.stringify(saved));
-  }, [saved]);
-
-  // Add workout to plan
   const addToPlan = (workout: Workout) => {
-    setPlan((currentPlan) => {
-      const alreadyExists = currentPlan.some(
-        (item) => item.id === workout.id
-      );
+  const alreadyExists = plan.some(
+    (item) => item.id === workout.id
+  );
 
-      if (alreadyExists) {
-        return currentPlan;
-      }
+  // Do not add the same workout twice
+  if (alreadyExists) {
+    return false;
+  }
 
-      return [...currentPlan, workout];
-    });
-  };
+  // Maximum 5 workouts allowed
+  if (plan.length >= 5) {
+    return false;
+  }
 
-  // Remove workout from plan
+  const updatedPlan = [...plan, workout];
+
+  setPlan(updatedPlan);
+
+  localStorage.setItem(
+    "fitlog-plan",
+    JSON.stringify(updatedPlan)
+  );
+
+  return true;
+};
+
+  // ============================================================
+  // REMOVE FROM TODAY'S PLAN
+  // ============================================================
+
   const removeFromPlan = (workoutId: number) => {
-    setPlan((currentPlan) =>
-      currentPlan.filter((item) => item.id !== workoutId)
+    const updatedPlan = plan.filter(
+      (item) => item.id !== workoutId
+    );
+
+    setPlan(updatedPlan);
+
+    localStorage.setItem(
+      "fitlog-plan",
+      JSON.stringify(updatedPlan)
     );
   };
 
-  // Save workout
+  // ============================================================
+  // SAVE FOR LATER
+  // ============================================================
+
   const saveWorkout = (workout: Workout) => {
-    setSaved((currentSaved) => {
-      const alreadySaved = currentSaved.some(
-        (item) => item.id === workout.id
-      );
+    const alreadyExists = saved.some(
+      (item) => item.id === workout.id
+    );
 
-      if (alreadySaved) {
-        return currentSaved;
-      }
+    if (alreadyExists) {
+      return false;
+    }
 
-      return [...currentSaved, workout];
-    });
+    const updatedSaved = [...saved, workout];
+
+    setSaved(updatedSaved);
+
+    localStorage.setItem(
+      "fitlog-saved",
+      JSON.stringify(updatedSaved)
+    );
+
+    return true;
   };
 
-  // Remove saved workout
+  // ============================================================
+  // REMOVE FROM SAVED
+  // ============================================================
+
   const removeFromSaved = (workoutId: number) => {
-    setSaved((currentSaved) =>
-      currentSaved.filter((item) => item.id !== workoutId)
+    const updatedSaved = saved.filter(
+      (item) => item.id !== workoutId
+    );
+
+    setSaved(updatedSaved);
+
+    localStorage.setItem(
+      "fitlog-saved",
+      JSON.stringify(updatedSaved)
     );
   };
 
-  // Check if workout is in plan
+  // ============================================================
+  // CHECK IF IN PLAN
+  // ============================================================
+
   const isInPlan = (workoutId: number) => {
-    return plan.some((item) => item.id === workoutId);
+    return plan.some(
+      (item) => item.id === workoutId
+    );
   };
 
-  // Check if workout is saved
+  // ============================================================
+  // CHECK IF SAVED
+  // ============================================================
+
   const isSaved = (workoutId: number) => {
-    return saved.some((item) => item.id === workoutId);
+    return saved.some(
+      (item) => item.id === workoutId
+    );
   };
+
+  // ============================================================
+  // PROVIDER
+  // ============================================================
 
   return (
     <FitLogContext.Provider
       value={{
         plan,
         saved,
+
         addToPlan,
         removeFromPlan,
+
         saveWorkout,
         removeFromSaved,
+
         isInPlan,
         isSaved,
       }}
@@ -131,6 +198,10 @@ export function FitLogProvider({
     </FitLogContext.Provider>
   );
 }
+
+// ============================================================
+// CUSTOM HOOK
+// ============================================================
 
 export function useFitLog() {
   const context = useContext(FitLogContext);

@@ -6,10 +6,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import logoImage from "../assets/logo.png";
+import { useFitLog } from "@/context/FitLogContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { plan, saved } = useFitLog();
 
   // Workout is active on Home and individual workout pages
   const isWorkoutPage =
@@ -115,9 +117,9 @@ export default function Navbar() {
       Plan
     </span>
 
-    {/* Plan Number - Initially Active */}
+    {/* Plan Number */}
     <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#ccff00] px-1.5 text-xs font-bold text-black">
-      0
+      {plan.length}
     </span>
   </Link>
 
@@ -130,9 +132,9 @@ export default function Navbar() {
       Saved
     </span>
 
-    {/* Saved Number - Initially Normal */}
+    {/* Saved Number */}
     <span className="text-[#a1a1a1]">
-      0
+      {saved.length}
     </span>
   </Link>
 
