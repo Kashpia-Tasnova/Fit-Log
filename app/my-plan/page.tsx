@@ -7,21 +7,18 @@ import { useMemo, useState } from "react";
 
 import {
   Check,
+  ChevronDown,
   Clock3,
   Flame,
   Star,
   X,
-  ChevronDown,
 } from "lucide-react";
 
 import { useFitLog } from "@/context/FitLogContext";
 
 type Tab = "plan" | "saved";
 
-type SortOption =
-  | "duration"
-  | "calories"
-  | "rating";
+type SortOption = "duration" | "calories" | "rating";
 
 export default function MyPlanPage() {
   const {
@@ -31,15 +28,10 @@ export default function MyPlanPage() {
     removeFromSaved,
   } = useFitLog();
 
-  /*
-   * READ TAB FROM URL
-   *
-   * /my-plan
-   *              -> Today's Plan
-   *
-   * /my-plan?tab=saved
-   *              -> Saved
-   */
+  /* --------------------------------
+     GET ACTIVE TAB FROM URL
+     -------------------------------- */
+
   const searchParams = useSearchParams();
 
   const activeTab: Tab =
@@ -47,20 +39,28 @@ export default function MyPlanPage() {
       ? "saved"
       : "plan";
 
+  /* --------------------------------
+     SORT
+     -------------------------------- */
+
   const [sortBy, setSortBy] =
     useState<SortOption>("duration");
 
+  /* --------------------------------
+     COMPLETED WORKOUTS
+     -------------------------------- */
+
   const [completed, setCompleted] =
     useState<number[]>([]);
+
+  /* --------------------------------
+     TOAST
+     -------------------------------- */
 
   const [toast, setToast] = useState("");
 
   const [toastType, setToastType] =
     useState<"success" | "error">("success");
-
-  /*
-   * TOAST
-   */
 
   const showToast = (
     message: string,
@@ -74,12 +74,9 @@ export default function MyPlanPage() {
     }, 2500);
   };
 
-  /*
-   * CURRENT WORKOUTS
-   *
-   * If Plan is selected -> plan
-   * If Saved is selected -> saved
-   */
+  /* --------------------------------
+     CURRENT WORKOUTS
+     -------------------------------- */
 
   const currentWorkouts = useMemo(() => {
     const workouts =
@@ -87,24 +84,25 @@ export default function MyPlanPage() {
         ? [...plan]
         : [...saved];
 
-    workouts.sort((a, b) => {
-      if (sortBy === "duration") {
-        return a.duration - b.duration;
-      }
+    if (sortBy === "duration") {
+      workouts.sort(
+        (a, b) => a.duration - b.duration
+      );
+    }
 
-      if (sortBy === "calories") {
-        return (
+    if (sortBy === "calories") {
+      workouts.sort(
+        (a, b) =>
           a.caloriesBurned -
           b.caloriesBurned
-        );
-      }
+      );
+    }
 
-      if (sortBy === "rating") {
-        return b.rating - a.rating;
-      }
-
-      return 0;
-    });
+    if (sortBy === "rating") {
+      workouts.sort(
+        (a, b) => b.rating - a.rating
+      );
+    }
 
     return workouts;
   }, [
@@ -114,12 +112,9 @@ export default function MyPlanPage() {
     sortBy,
   ]);
 
-  /*
-   * METRICS
-   *
-   * Plan tab -> Plan totals
-   * Saved tab -> Saved totals
-   */
+  /* --------------------------------
+     METRICS
+     -------------------------------- */
 
   const displayedWorkouts =
     activeTab === "plan"
@@ -140,9 +135,9 @@ export default function MyPlanPage() {
       0
     );
 
-  /*
-   * MARK AS DONE
-   */
+  /* --------------------------------
+     MARK AS DONE
+     -------------------------------- */
 
   const handleDone = (
     workoutId: number
@@ -165,9 +160,9 @@ export default function MyPlanPage() {
     );
   };
 
-  /*
-   * REMOVE FROM PLAN
-   */
+  /* --------------------------------
+     REMOVE FROM PLAN
+     -------------------------------- */
 
   const handleRemovePlan = (
     workoutId: number
@@ -186,9 +181,9 @@ export default function MyPlanPage() {
     );
   };
 
-  /*
-   * REMOVE FROM SAVED
-   */
+  /* --------------------------------
+     REMOVE FROM SAVED
+     -------------------------------- */
 
   const handleRemoveSaved = (
     workoutId: number
@@ -206,7 +201,9 @@ export default function MyPlanPage() {
 
       <section className="mx-auto w-full max-w-[1184px] px-6 pb-20 pt-11 sm:px-8 lg:px-0">
 
-        {/* PAGE TITLE */}
+        {/* =========================================
+            PAGE HEADER
+            ========================================= */}
 
         <div>
           <h1 className="text-[28px] font-black uppercase leading-none tracking-[-0.02em] sm:text-[30px]">
@@ -214,12 +211,14 @@ export default function MyPlanPage() {
           </h1>
 
           <p className="mt-2 text-[13px] leading-5 text-[#9ca3af]">
-            Cap of five lifts for today. Finish them, then
-            load more.
+            Cap of five lifts for today. Finish them,
+            then load more.
           </p>
         </div>
 
-        {/* METRICS */}
+        {/* =========================================
+            METRICS
+            ========================================= */}
 
         <div className="mt-6 flex min-h-[122px] w-full items-center rounded-[15px] border border-[#29303b] bg-[#14171d] px-6 sm:px-8">
 
@@ -271,82 +270,96 @@ export default function MyPlanPage() {
 
         </div>
 
-{/* TABS + SORT */}
+        {/* =========================================
+            TABS + SORT
+            ========================================= */}
 
-<div className="mt-8 flex items-center justify-between gap-4">
+        <div className="mt-8 flex items-center justify-between gap-4">
 
-  {/* PLAN / SAVED TABS */}
+          {/* -----------------------------------------
+              TABS CONTAINER
+              ----------------------------------------- */}
 
-  <div className="flex h-[40px] items-center rounded-[8px] border border-[#29303b] bg-[#14171d] p-[3px]">
+          <div className="flex h-[40px] items-center rounded-[8px] border border-[#29303b] bg-[#14171d] p-[3px]">
 
-    {/* TODAY'S PLAN */}
+            {/* TODAY'S PLAN */}
 
-    <Link
-      href="/my-plan"
-      className={`flex h-full items-center rounded-[6px] px-5 text-[12px] font-semibold transition ${
-        activeTab === "plan"
-          ? "text-[#ccff00]"
-          : "text-[#8f96a3] hover:text-white"
-      }`}
-    >
-      Today&apos;s Plan
-    </Link>
+            <Link
+              href="/my-plan"
+              style={{
+                color:
+                  activeTab === "plan"
+                    ? "#ccff00"
+                    : "#8f96a3",
+              }}
+              className="flex h-full items-center rounded-[6px] px-5 text-[12px] font-semibold transition-colors hover:text-[#ccff00]"
+            >
+              Today&apos;s Plan
+            </Link>
 
-    {/* SAVED */}
+            {/* SAVED */}
 
-    <Link
-      href="/my-plan?tab=saved"
-      className={`flex h-full items-center rounded-[6px] px-5 text-[12px] font-semibold transition ${
-        activeTab === "saved"
-          ? "text-[#ccff00]"
-          : "text-[#8f96a3] hover:text-white"
-      }`}
-    >
-      Saved
-    </Link>
+            <Link
+              href="/my-plan?tab=saved"
+              style={{
+                color:
+                  activeTab === "saved"
+                    ? "#ccff00"
+                    : "#8f96a3",
+              }}
+              className="flex h-full items-center rounded-[6px] px-5 text-[12px] font-semibold transition-colors hover:text-[#ccff00]"
+            >
+              Saved
+            </Link>
 
-  </div>
+          </div>
 
-  {/* SORT */}
+          {/* -----------------------------------------
+              SORT
+              ----------------------------------------- */}
 
-  <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
 
-    <span className="hidden text-[12px] font-medium text-[#a1a1a1] sm:block">
-      Sort By
-    </span>
+            <span className="hidden text-[12px] font-medium text-[#a1a1a1] sm:block">
+              Sort By
+            </span>
 
-    <div className="relative">
+            <div className="relative">
 
-      <select
-        value={sortBy}
-        onChange={(e) =>
-          setSortBy(
-            e.target.value as SortOption
-          )
-        }
-        className="h-[36px] appearance-none rounded-[8px] border border-[#29303b] bg-[#14171d] pl-3 pr-9 text-[12px] text-white outline-none transition focus:border-[#ccff00]"
-      >
-        <option value="duration">
-          Duration
-        </option>
+              <select
+                value={sortBy}
+                onChange={(e) =>
+                  setSortBy(
+                    e.target
+                      .value as SortOption
+                  )
+                }
+                className="h-[36px] appearance-none rounded-[8px] border border-[#29303b] bg-[#14171d] pl-3 pr-9 text-[12px] text-white outline-none transition focus:border-[#ccff00]"
+              >
+                <option value="duration">
+                  Duration
+                </option>
 
-        <option value="calories">
-          Calories
-        </option>
+                <option value="calories">
+                  Calories
+                </option>
 
-        <option value="rating">
-          Rating
-        </option>
-      </select>
+                <option value="rating">
+                  Rating
+                </option>
+              </select>
 
-      <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#8f96a3]" />
+              <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#8f96a3]" />
 
-    </div>
+            </div>
 
-  </div>
+          </div>
 
-</div>
-        {/* EMPTY STATE */}
+        </div>
+
+        {/* =========================================
+            EMPTY STATE
+            ========================================= */}
 
         {currentWorkouts.length === 0 && (
           <div className="mt-6 flex min-h-[240px] flex-col items-center justify-center rounded-[14px] border border-dashed border-[#29303b] bg-[#14171d] px-6 text-center">
@@ -358,7 +371,8 @@ export default function MyPlanPage() {
             </h2>
 
             <p className="mt-2 max-w-md text-[13px] leading-5 text-[#8f96a3]">
-              Browse the library and add a lift to get today moving.
+              Browse the library and add a lift to
+              get today moving.
             </p>
 
             <Link
@@ -371,7 +385,9 @@ export default function MyPlanPage() {
           </div>
         )}
 
-        {/* WORKOUT LIST */}
+        {/* =========================================
+            WORKOUT LIST
+            ========================================= */}
 
         {currentWorkouts.length > 0 && (
           <div className="mt-6 space-y-4">
@@ -412,7 +428,7 @@ export default function MyPlanPage() {
 
                     </div>
 
-                    {/* INFO */}
+                    {/* INFORMATION */}
 
                     <div className="ml-4 min-w-0 flex-1">
 
@@ -434,6 +450,8 @@ export default function MyPlanPage() {
 
                       <div className="mt-3 flex items-center gap-4">
 
+                        {/* DURATION */}
+
                         <div className="flex items-center gap-1.5">
 
                           <Clock3 className="h-[14px] w-[14px] text-[#ccff00]" />
@@ -444,6 +462,8 @@ export default function MyPlanPage() {
 
                         </div>
 
+                        {/* CALORIES */}
+
                         <div className="flex items-center gap-1.5">
 
                           <Flame className="h-[14px] w-[14px] text-[#ccff00]" />
@@ -453,6 +473,8 @@ export default function MyPlanPage() {
                           </span>
 
                         </div>
+
+                        {/* RATING */}
 
                         <div className="flex items-center gap-1.5">
 
@@ -540,7 +562,9 @@ export default function MyPlanPage() {
 
       </section>
 
-      {/* TOAST */}
+      {/* =========================================
+          TOAST
+          ========================================= */}
 
       {toast && (
         <div className="fixed right-5 top-[88px] z-[100] flex items-center gap-3 rounded-[8px] border border-[#29303b] bg-[#181b21] px-5 py-3 shadow-2xl sm:right-8">
