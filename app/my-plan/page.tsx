@@ -31,8 +31,6 @@ export default function MyPlanPage() {
     removeFromSaved,
   } = useFitLog();
 
-  /* ACTIVE TAB*/
-
   const searchParams = useSearchParams();
 
   const activeTab: Tab =
@@ -40,17 +38,11 @@ export default function MyPlanPage() {
       ? "saved"
       : "plan";
 
-  /*  SORTING */
-
   const [sortBy, setSortBy] =
     useState<SortOption | null>(null);
 
-  /*  COMPLETED WORKOUTS */
-
   const [completed, setCompleted] =
     useState<number[]>([]);
-
-  /*  TOAST */
 
   const [toast, setToast] = useState("");
 
@@ -69,8 +61,6 @@ export default function MyPlanPage() {
     }, 2500);
   };
 
-  /*  WORKOUT LIST + SORTING */
-
   const currentWorkouts = useMemo(() => {
     const workouts =
       activeTab === "plan"
@@ -79,8 +69,7 @@ export default function MyPlanPage() {
 
     if (sortBy === "duration") {
       workouts.sort(
-        (a, b) =>
-          a.duration - b.duration
+        (a, b) => a.duration - b.duration
       );
     }
 
@@ -94,8 +83,7 @@ export default function MyPlanPage() {
 
     if (sortBy === "rating") {
       workouts.sort(
-        (a, b) =>
-          a.rating - b.rating
+        (a, b) => a.rating - b.rating
       );
     }
 
@@ -106,8 +94,6 @@ export default function MyPlanPage() {
     saved,
     sortBy,
   ]);
-
-  /* METRICS */
 
   const displayedWorkouts =
     activeTab === "plan"
@@ -127,8 +113,6 @@ export default function MyPlanPage() {
         total + workout.caloriesBurned,
       0
     );
-
-  /*  MARK AS DONE */
 
   const handleDone = (
     workoutId: number
@@ -151,8 +135,6 @@ export default function MyPlanPage() {
     );
   };
 
-  /* REMOVE FROM PLAN */
-
   const handleRemovePlan = (
     workoutId: number
   ) => {
@@ -170,8 +152,6 @@ export default function MyPlanPage() {
     );
   };
 
-  /*  REMOVE FROM SAVED */
-
   const handleRemoveSaved = (
     workoutId: number
   ) => {
@@ -185,11 +165,7 @@ export default function MyPlanPage() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-
       <section className="mx-auto w-full max-w-[1184px] px-4 pb-20 pt-8 sm:px-6 sm:pt-10 md:px-8 lg:px-0 lg:pt-11">
-
-        {/* PAGE HEADER */}
-
         <div>
           <h1 className="text-[28px] font-black uppercase leading-none tracking-[-0.02em] sm:text-[30px]">
             My Plan
@@ -201,14 +177,8 @@ export default function MyPlanPage() {
           </p>
         </div>
 
-        {/*  METRICS */}
-
         <div className="mt-6 flex min-h-[122px] w-full items-center rounded-[15px] border border-[#29303b] bg-[#14171d] px-4 sm:px-6 md:px-8">
-
-          {/* EXERCISES */}
-
           <div className="flex min-w-0 flex-1 flex-col justify-center">
-
             <span className="text-[12px] text-[#8f96a3]">
               Exercises
             </span>
@@ -216,15 +186,11 @@ export default function MyPlanPage() {
             <span className="mt-2 text-[32px] font-black leading-none text-[#ccff00] sm:text-[40px]">
               {displayedWorkouts.length}
             </span>
-
           </div>
 
           <div className="h-[60px] w-px shrink-0 bg-[#252a33]" />
 
-          {/* MINUTES */}
-
           <div className="flex min-w-0 flex-1 flex-col justify-center pl-4 sm:pl-6 md:pl-8">
-
             <span className="text-[12px] text-[#8f96a3]">
               Minutes
             </span>
@@ -232,15 +198,11 @@ export default function MyPlanPage() {
             <span className="mt-2 text-[32px] font-black leading-none text-white sm:text-[40px]">
               {totalMinutes}
             </span>
-
           </div>
 
           <div className="h-[60px] w-px shrink-0 bg-[#252a33]" />
 
-          {/* CALORIES */}
-
           <div className="flex min-w-0 flex-1 flex-col justify-center pl-4 sm:pl-6 md:pl-8">
-
             <span className="text-[12px] text-[#8f96a3]">
               Calories
             </span>
@@ -248,23 +210,11 @@ export default function MyPlanPage() {
             <span className="mt-2 text-[32px] font-black leading-none text-white sm:text-[40px]">
               {totalCalories}
             </span>
-
           </div>
-
         </div>
 
-        {/* =====================================
-            TABS + SORT
-            ===================================== */}
-
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-
-          {/*  PLAN / SAVED TABS */}
-
           <div className="flex h-[40px] shrink-0 items-center rounded-[8px] border border-[#29303b] bg-[#14171d] p-[3px]">
-
-            {/* TODAY'S PLAN */}
-
             <Link
               href="/my-plan"
               style={{
@@ -275,10 +225,8 @@ export default function MyPlanPage() {
               }}
               className="flex h-full items-center rounded-[6px] px-4 text-[12px] font-semibold transition-colors hover:text-[#ccff00] sm:px-5"
             >
-              Today&apos;s Plan
+              Today's Plan
             </Link>
-
-            {/* SAVED */}
 
             <Link
               href="/my-plan?tab=saved"
@@ -292,19 +240,14 @@ export default function MyPlanPage() {
             >
               Saved
             </Link>
-
           </div>
 
-          {/* SORT DROPDOWN */}
-
           <div className="flex shrink-0 items-center gap-2">
-
             <span className="hidden text-[12px] font-medium text-[#a1a1a1] sm:block">
               Sort By
             </span>
 
             <div className="relative">
-
               <select
                 value={sortBy ?? ""}
                 onChange={(e) => {
@@ -322,7 +265,6 @@ export default function MyPlanPage() {
                 }}
                 className="h-[36px] appearance-none rounded-[8px] border border-[#29303b] bg-[#14171d] pl-3 pr-9 text-[12px] text-white outline-none transition hover:border-[#3b4350] focus:border-[#ccff00]"
               >
-
                 <option value="">
                   Sort By
                 </option>
@@ -338,24 +280,15 @@ export default function MyPlanPage() {
                 <option value="rating">
                   Rating
                 </option>
-
               </select>
 
-              <ChevronDown
-                className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#8f96a3]"
-              />
-
+              <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#8f96a3]" />
             </div>
-
           </div>
-
         </div>
-
-        {/* EMPTY STATE */}
 
         {currentWorkouts.length === 0 && (
           <div className="mt-6 flex min-h-[240px] flex-col items-center justify-center rounded-[14px] border border-dashed border-[#29303b] bg-[#14171d] px-6 text-center">
-
             <h2 className="text-lg font-bold uppercase">
               {activeTab === "plan"
                 ? "Your plan is empty"
@@ -373,18 +306,13 @@ export default function MyPlanPage() {
             >
               Go to workouts
             </Link>
-
           </div>
         )}
 
-        {/* WORKOUT LIST */}
-
         {currentWorkouts.length > 0 && (
           <div className="mt-6 space-y-4">
-
             {currentWorkouts.map(
               (workout) => {
-
                 const isCompleted =
                   completed.includes(
                     workout.id
@@ -399,17 +327,8 @@ export default function MyPlanPage() {
                         : "border-[#29303b]"
                     }`}
                   >
-
-                    {/* =================================
-                         IMAGE + INFORMATION
-                        ================================= */}
-
                     <div className="flex min-w-0 flex-1 items-center">
-
-                      {/* WORKOUT IMAGE */}
-
                       <div className="relative h-[80px] w-[110px] shrink-0 overflow-hidden rounded-[10px] bg-[#20242b] sm:h-[80px] sm:w-[145px]">
-
                         <Image
                           src={workout.image}
                           alt={workout.name}
@@ -421,13 +340,9 @@ export default function MyPlanPage() {
                           }`}
                           sizes="(max-width: 640px) 110px, 145px"
                         />
-
                       </div>
 
-                      {/* WORKOUT INFORMATION */}
-
                       <div className="ml-3 min-w-0 flex-1 sm:ml-4">
-
                         <h2
                           className={`truncate text-[15px] font-black uppercase leading-none sm:text-[16px] ${
                             isCompleted
@@ -442,66 +357,41 @@ export default function MyPlanPage() {
                           {workout.equipment}
                         </p>
 
-                        {/* STATS */}
-
                         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-4">
-
-                          {/* DURATION */}
-
                           <div className="flex items-center gap-1.5">
-
                             <Clock3 className="h-[14px] w-[14px] shrink-0 text-[#ccff00]" />
 
                             <span className="text-[11px] text-[#c1c5cc]">
                               {workout.duration} min
                             </span>
-
                           </div>
 
-                          {/* CALORIES */}
-
                           <div className="flex items-center gap-1.5">
-
                             <Flame className="h-[14px] w-[14px] shrink-0 text-[#ccff00]" />
 
                             <span className="text-[11px] text-[#c1c5cc]">
                               {workout.caloriesBurned} kcal
                             </span>
-
                           </div>
 
-                          {/* RATING */}
-
                           <div className="flex items-center gap-1.5">
-
                             <Star className="h-[14px] w-[14px] shrink-0 text-[#ccff00]" />
 
                             <span className="text-[11px] text-[#c1c5cc]">
                               {workout.rating}
                             </span>
-
                           </div>
-
                         </div>
-
                       </div>
-
                     </div>
 
-                    {/*  ACTION BUTTONS*/}
-
                     <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[#252a33] pt-3 sm:ml-4 sm:mt-0 sm:justify-start sm:gap-3 sm:border-t-0 sm:pt-0">
-
-                      {/* VIEW DETAILS */}
-
                       <Link
                         href={`/workout/${workout.id}`}
                         className="hidden h-[35px] items-center justify-center rounded-full border border-[#39414d] px-5 text-[11px] font-medium text-[#e5e7eb] transition hover:border-[#ccff00] hover:text-[#ccff00] sm:flex"
                       >
                         View Details
                       </Link>
-
-                      {/* MARK AS DONE */}
 
                       {activeTab === "plan" && (
                         <button
@@ -517,7 +407,6 @@ export default function MyPlanPage() {
                               : "bg-[#ccff00] text-black hover:bg-[#bfff00]"
                           }`}
                         >
-
                           <Check className="h-[13px] w-[13px]" />
 
                           <span className="hidden sm:inline">
@@ -525,11 +414,8 @@ export default function MyPlanPage() {
                               ? "Done"
                               : "Mark as Done"}
                           </span>
-
                         </button>
                       )}
-
-                      {/* REMOVE */}
 
                       <button
                         type="button"
@@ -547,24 +433,17 @@ export default function MyPlanPage() {
                       >
                         <X className="h-[18px] w-[18px]" />
                       </button>
-
                     </div>
-
                   </div>
                 );
               }
             )}
-
           </div>
         )}
-
       </section>
-
-      {/* TOAST MESSAGE*/}
 
       {toast && (
         <div className="fixed right-3 top-[88px] z-[100] flex max-w-[calc(100vw-24px)] items-center gap-3 rounded-[8px] border border-[#29303b] bg-[#181b21] px-4 py-3 shadow-2xl sm:right-8 sm:px-5">
-
           {toastType === "success" ? (
             <Check className="h-4 w-4 shrink-0 text-[#ccff00]" />
           ) : (
@@ -574,10 +453,8 @@ export default function MyPlanPage() {
           <p className="text-[12px] text-white">
             {toast}
           </p>
-
         </div>
       )}
-
     </main>
   );
 }
