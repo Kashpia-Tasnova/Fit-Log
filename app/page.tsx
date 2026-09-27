@@ -34,7 +34,7 @@ export default function Home() {
           </div>
 
           {/* Hero Image */}
-          <div className="mx-auto w-full max-w-md overflow-hidden rounded-xl border border-[#292929] lg:max-w-lg">
+          <div className="mx-auto w-full max-w-md overflow-hidden rounded-xl lg:max-w-lg">
             <Image src={bannerImage} alt="FitLog workout banner" priority className="h-auto w-full object-cover"/>
           </div>
 
