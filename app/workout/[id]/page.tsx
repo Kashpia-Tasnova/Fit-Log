@@ -54,11 +54,10 @@ export default function WorkoutDetailsPage({
     isSaved,
   } = useFitLog();
 
-  /*
-   * ==============================
-   * FETCH WORKOUT
-   * ==============================
-   */
+  /* ==================================
+     FETCH WORKOUT
+  ================================== */
+
   useEffect(() => {
     async function fetchWorkout() {
       try {
@@ -95,40 +94,26 @@ export default function WorkoutDetailsPage({
     fetchWorkout();
   }, [params]);
 
-  /*
-   * ==============================
-   * ADD TO PLAN
-   * ==============================
-   */
+  /* ==================================
+     ADD TO PLAN
+  ================================== */
+
   const handleAddToPlan = () => {
     if (!workout) return;
 
-    /*
-     * Already exists
-     */
     if (isInPlan(workout.id)) {
       setPlanSuccess(false);
 
       setPlanMessage(
         "Already added to today's plan."
       );
-    }
-
-    /*
-     * Maximum 5 workouts
-     */
-    else if (plan.length >= 5) {
+    } else if (plan.length >= 5) {
       setPlanSuccess(false);
 
       setPlanMessage(
         "Cannot add more. Today's plan is limited to 5 workouts."
       );
-    }
-
-    /*
-     * Add workout
-     */
-    else {
+    } else {
       const added = addToPlan(workout);
 
       if (added) {
@@ -151,29 +136,20 @@ export default function WorkoutDetailsPage({
     }, 2500);
   };
 
-  /*
-   * ==============================
-   * SAVE WORKOUT
-   * ==============================
-   */
+  /* ==================================
+     SAVE WORKOUT
+  ================================== */
+
   const handleSave = () => {
     if (!workout) return;
 
-    /*
-     * Already saved
-     */
     if (isSaved(workout.id)) {
       setSavedSuccess(false);
 
       setSavedMessage(
         "Already saved for later."
       );
-    }
-
-    /*
-     * Save workout
-     */
-    else {
+    } else {
       const saved = saveWorkout(workout);
 
       if (saved) {
@@ -196,71 +172,66 @@ export default function WorkoutDetailsPage({
     }, 2500);
   };
 
-  /*
-   * ==============================
-   * LOADING STATE
-   * ==============================
-   */
+  /* ==================================
+     LOADING STATE
+  ================================== */
+
   if (loading) {
     return (
       <main className="min-h-[80vh] bg-[#0b0b0b] text-white">
-        <div className="flex min-h-[70vh] items-center justify-center">
+        <div className="flex min-h-[70vh] items-center justify-center px-4">
           <div className="flex flex-col items-center gap-4">
+            <div className="h-9 w-9 animate-spin rounded-full border-2 border-[#292929] border-t-[#ccff00] sm:h-10 sm:w-10" />
 
-            <div className="h-9 w-9 animate-spin rounded-full border-2 border-[#292929] border-t-[#ccff00]" />
-
-            <p className="text-sm text-[#a1a1a1]">
+            <p className="text-xs text-[#a1a1a1] sm:text-sm">
               Loading workout...
             </p>
-
           </div>
         </div>
       </main>
     );
   }
 
-  /*
-   * ==============================
-   * ERROR STATE
-   * ==============================
-   */
+  /* ==================================
+     ERROR STATE
+  ================================== */
+
   if (error || !workout) {
     return (
-      <main className="flex min-h-[80vh] items-center justify-center bg-[#0b0b0b] px-6 text-center text-white">
-        <p className="text-sm text-[#a1a1a1]">
+      <main className="flex min-h-[80vh] items-center justify-center bg-[#0b0b0b] px-5 text-center text-white sm:px-6">
+        <p className="max-w-md text-xs leading-5 text-[#a1a1a1] sm:text-sm">
           {error || "Workout not found."}
         </p>
       </main>
     );
   }
 
-  /*
-   * ==============================
-   * CURRENT STATUS
-   * ==============================
-   */
+  /* ==================================
+     CURRENT STATUS
+  ================================== */
+
   const alreadyInPlan =
     isInPlan(workout.id);
 
   const alreadySaved =
     isSaved(workout.id);
 
-  /*
-   * ==============================
-   * PAGE
-   * ==============================
-   */
+  /* ==================================
+     PAGE
+  ================================== */
+
   return (
     <main className="min-h-screen bg-[#0b0b0b] text-white">
 
-      <section className="mx-auto w-full max-w-[1280px] px-5 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-14">
+      <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
 
-        <div className="grid items-start gap-10 lg:grid-cols-[1fr_1fr] lg:gap-14">
+        <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
 
           {/* ==================================
               LEFT SIDE — WORKOUT IMAGE
-          =================================== */}
-          <div className="relative w-full overflow-hidden rounded-[16px] bg-[#151515]">
+          ================================== */}
+
+          <div className="w-full overflow-hidden rounded-xl bg-[#151515] lg:sticky lg:top-28">
 
             <div className="relative aspect-[4/5] w-full">
 
@@ -274,31 +245,36 @@ export default function WorkoutDetailsPage({
               />
 
             </div>
+
           </div>
 
           {/* ==================================
               RIGHT SIDE — WORKOUT INFORMATION
-          =================================== */}
+          ================================== */}
+
           <div className="flex min-w-0 flex-col">
 
-            {/* Workout name */}
-            <h1 className="text-[34px] font-black uppercase leading-[0.95] tracking-[-0.02em] text-white sm:text-[42px] lg:text-[44px]">
+            {/* WORKOUT NAME */}
+
+            <h1 className="text-3xl font-black uppercase leading-[0.98] tracking-tight text-white sm:text-4xl lg:text-[44px]">
               {workout.name}
             </h1>
 
-            {/* Description */}
-            <p className="mt-4 max-w-[590px] text-sm leading-6 text-[#a1a1a1] sm:text-[15px]">
+            {/* DESCRIPTION */}
+
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#a1a1a1] sm:text-[15px] sm:leading-7">
               {workout.description}
             </p>
 
-            {/* Muscle groups */}
+            {/* MUSCLE GROUPS */}
+
             <div className="mt-5 flex flex-wrap gap-2">
 
               {workout.muscleGroups.map(
                 (muscle) => (
                   <span
                     key={muscle}
-                    className="rounded-full bg-[#ccff00] px-4 py-1.5 text-xs font-semibold text-black"
+                    className="rounded-full bg-[#ccff00] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-black sm:px-4 sm:text-xs"
                   >
                     {muscle}
                   </span>
@@ -309,95 +285,103 @@ export default function WorkoutDetailsPage({
 
             {/* ==================================
                 KEY SPECS
-            =================================== */}
-            <div className="mt-7 overflow-hidden rounded-[15px] border border-[#272d38] bg-[#151820]">
+            ================================== */}
 
-              {/* Equipment */}
-              <div className="flex min-h-[49px] items-center justify-between border-b border-[#272d38] px-6 py-3.5">
+            <div className="mt-7 overflow-hidden rounded-xl border border-[#272d38] bg-[#151820]">
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-[#9ca3af]">
+              {/* EQUIPMENT */}
+
+              <div className="flex min-h-[52px] items-center justify-between gap-4 border-b border-[#272d38] px-4 py-3 sm:px-6">
+
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] sm:text-[11px]">
                   Equipment
                 </span>
 
-                <span className="text-sm text-[#e5e7eb]">
+                <span className="text-right text-xs text-[#e5e7eb] sm:text-sm">
                   {workout.equipment}
                 </span>
 
               </div>
 
-              {/* Difficulty */}
-              <div className="flex min-h-[49px] items-center justify-between border-b border-[#272d38] px-6 py-3.5">
+              {/* DIFFICULTY */}
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-[#9ca3af]">
+              <div className="flex min-h-[52px] items-center justify-between gap-4 border-b border-[#272d38] px-4 py-3 sm:px-6">
+
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] sm:text-[11px]">
                   Difficulty
                 </span>
 
-                <span className="text-sm text-[#e5e7eb]">
+                <span className="text-right text-xs text-[#e5e7eb] sm:text-sm">
                   {workout.difficulty}
                 </span>
 
               </div>
 
-              {/* Sets */}
-              <div className="flex min-h-[49px] items-center justify-between border-b border-[#272d38] px-6 py-3.5">
+              {/* SETS */}
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-[#9ca3af]">
+              <div className="flex min-h-[52px] items-center justify-between gap-4 border-b border-[#272d38] px-4 py-3 sm:px-6">
+
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] sm:text-[11px]">
                   Sets
                 </span>
 
-                <span className="text-sm text-[#e5e7eb]">
+                <span className="text-right text-xs text-[#e5e7eb] sm:text-sm">
                   {workout.sets}
                 </span>
 
               </div>
 
-              {/* Reps */}
-              <div className="flex min-h-[49px] items-center justify-between border-b border-[#272d38] px-6 py-3.5">
+              {/* REPS */}
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-[#9ca3af]">
+              <div className="flex min-h-[52px] items-center justify-between gap-4 border-b border-[#272d38] px-4 py-3 sm:px-6">
+
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] sm:text-[11px]">
                   Reps
                 </span>
 
-                <span className="text-sm text-[#e5e7eb]">
+                <span className="text-right text-xs text-[#e5e7eb] sm:text-sm">
                   {workout.reps}
                 </span>
 
               </div>
 
-              {/* Duration */}
-              <div className="flex min-h-[49px] items-center justify-between border-b border-[#272d38] px-6 py-3.5">
+              {/* DURATION */}
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-[#9ca3af]">
+              <div className="flex min-h-[52px] items-center justify-between gap-4 border-b border-[#272d38] px-4 py-3 sm:px-6">
+
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] sm:text-[11px]">
                   Duration
                 </span>
 
-                <span className="text-sm text-[#e5e7eb]">
+                <span className="text-right text-xs text-[#e5e7eb] sm:text-sm">
                   {workout.duration} min
                 </span>
 
               </div>
 
-              {/* Calories */}
-              <div className="flex min-h-[49px] items-center justify-between border-b border-[#272d38] px-6 py-3.5">
+              {/* CALORIES */}
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-[#9ca3af]">
+              <div className="flex min-h-[52px] items-center justify-between gap-4 border-b border-[#272d38] px-4 py-3 sm:px-6">
+
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] sm:text-[11px]">
                   Calories
                 </span>
 
-                <span className="text-sm text-[#e5e7eb]">
+                <span className="text-right text-xs text-[#e5e7eb] sm:text-sm">
                   {workout.caloriesBurned} kcal
                 </span>
 
               </div>
 
-              {/* Rating */}
-              <div className="flex min-h-[49px] items-center justify-between px-6 py-3.5">
+              {/* RATING */}
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.06em] text-[#9ca3af]">
+              <div className="flex min-h-[52px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
+
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] sm:text-[11px]">
                   Rating
                 </span>
 
-                <span className="text-sm text-[#e5e7eb]">
+                <span className="text-right text-xs text-[#e5e7eb] sm:text-sm">
                   {workout.rating}
                 </span>
 
@@ -407,27 +391,28 @@ export default function WorkoutDetailsPage({
 
             {/* ==================================
                 INSTRUCTIONS
-            =================================== */}
+            ================================== */}
+
             <div className="mt-8">
 
-              <h2 className="text-base font-black uppercase tracking-wide text-white">
+              <h2 className="text-base font-black uppercase tracking-wide text-white sm:text-lg">
                 Instructions
               </h2>
 
-              <ol className="mt-4 space-y-3">
+              <ol className="mt-4 space-y-4">
 
                 {workout.instructions.map(
                   (instruction, index) => (
                     <li
                       key={index}
-                      className="flex gap-3 text-sm leading-5 text-[#d1d5db]"
+                      className="flex gap-3 text-xs leading-6 text-[#d1d5db] sm:text-sm"
                     >
 
-                      <span className="shrink-0 font-medium text-white">
+                      <span className="shrink-0 font-bold text-[#ccff00]">
                         {index + 1}.
                       </span>
 
-                      <span>
+                      <span className="min-w-0">
                         {instruction}
                       </span>
 
@@ -436,24 +421,26 @@ export default function WorkoutDetailsPage({
                 )}
 
               </ol>
+
             </div>
 
             {/* ==================================
                 ACTION BUTTONS
-            =================================== */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            ================================== */}
+
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
 
               {/* ADD TO PLAN */}
+
               <button
                 type="button"
                 onClick={handleAddToPlan}
-                className={`inline-flex items-center justify-center gap-2 rounded-[9px] px-6 py-3.5 text-sm font-medium transition ${
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 py-3 text-xs font-bold uppercase tracking-wide transition sm:text-sm ${
                   alreadyInPlan
                     ? "bg-[#292929] text-[#a1a1a1]"
                     : "bg-[#ccff00] text-black hover:bg-[#bfff00]"
                 }`}
               >
-
                 {alreadyInPlan ? (
                   <>
                     <Check className="h-4 w-4" />
@@ -465,20 +452,19 @@ export default function WorkoutDetailsPage({
                     Add to today&apos;s plan
                   </>
                 )}
-
               </button>
 
               {/* SAVE */}
+
               <button
                 type="button"
                 onClick={handleSave}
-                className={`inline-flex items-center justify-center gap-2 rounded-[9px] border px-6 py-3.5 text-sm font-medium transition ${
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-5 py-3 text-xs font-bold uppercase tracking-wide transition sm:text-sm ${
                   alreadySaved
                     ? "border-[#303642] text-[#777777]"
                     : "border-[#39404d] text-[#e5e7eb] hover:border-[#ccff00] hover:text-[#ccff00]"
                 }`}
               >
-
                 {alreadySaved ? (
                   <>
                     <Check className="h-4 w-4" />
@@ -490,20 +476,21 @@ export default function WorkoutDetailsPage({
                     Save for later
                   </>
                 )}
-
               </button>
 
             </div>
 
           </div>
         </div>
+
       </section>
 
       {/* ==================================
           PLAN TOAST
-      =================================== */}
+      ================================== */}
+
       {planMessage && (
-        <div className="fixed right-5 top-[88px] z-[100] flex max-w-[calc(100vw-40px)] items-center gap-3 rounded-md bg-[#1a1d24] px-5 py-3 shadow-xl sm:right-8">
+        <div className="fixed right-3 top-[88px] z-[100] flex max-w-[calc(100vw-24px)] items-center gap-3 rounded-lg bg-[#1a1d24] px-4 py-3 shadow-xl sm:right-6 sm:max-w-md sm:px-5">
 
           {planSuccess ? (
             <Check className="h-5 w-5 shrink-0 text-[#ccff00]" />
@@ -511,7 +498,7 @@ export default function WorkoutDetailsPage({
             <X className="h-5 w-5 shrink-0 text-red-400" />
           )}
 
-          <p className="text-sm text-white">
+          <p className="text-xs leading-5 text-white sm:text-sm">
             {planMessage}
           </p>
 
@@ -520,9 +507,10 @@ export default function WorkoutDetailsPage({
 
       {/* ==================================
           SAVED TOAST
-      =================================== */}
+      ================================== */}
+
       {savedMessage && (
-        <div className="fixed right-5 top-[88px] z-[100] flex max-w-[calc(100vw-40px)] items-center gap-3 rounded-md bg-[#1a1d24] px-5 py-3 shadow-xl sm:right-8">
+        <div className="fixed right-3 top-[88px] z-[100] flex max-w-[calc(100vw-24px)] items-center gap-3 rounded-lg bg-[#1a1d24] px-4 py-3 shadow-xl sm:right-6 sm:max-w-md sm:px-5">
 
           {savedSuccess ? (
             <Check className="h-5 w-5 shrink-0 text-[#ccff00]" />
@@ -530,7 +518,7 @@ export default function WorkoutDetailsPage({
             <X className="h-5 w-5 shrink-0 text-red-400" />
           )}
 
-          <p className="text-sm text-white">
+          <p className="text-xs leading-5 text-white sm:text-sm">
             {savedMessage}
           </p>
 

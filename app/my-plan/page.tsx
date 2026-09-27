@@ -46,12 +46,6 @@ export default function MyPlanPage() {
      SORTING
      ========================================= */
 
-  /*
-   * null means:
-   * Do not sort.
-   * Keep the original added order.
-   */
-
   const [sortBy, setSortBy] =
     useState<SortOption | null>(null);
 
@@ -88,25 +82,10 @@ export default function MyPlanPage() {
      ========================================= */
 
   const currentWorkouts = useMemo(() => {
-    /*
-     * First copy the workouts.
-     *
-     * If no sort option is selected,
-     * this array keeps the exact order
-     * in which workouts were added.
-     */
-
     const workouts =
       activeTab === "plan"
         ? [...plan]
         : [...saved];
-
-    /*
-     * DURATION
-     *
-     * Ascending:
-     * shortest → longest
-     */
 
     if (sortBy === "duration") {
       workouts.sort(
@@ -115,13 +94,6 @@ export default function MyPlanPage() {
       );
     }
 
-    /*
-     * CALORIES
-     *
-     * Ascending:
-     * lowest → highest
-     */
-
     if (sortBy === "calories") {
       workouts.sort(
         (a, b) =>
@@ -129,13 +101,6 @@ export default function MyPlanPage() {
           b.caloriesBurned
       );
     }
-
-    /*
-     * RATING
-     *
-     * Ascending:
-     * lowest → highest
-     */
 
     if (sortBy === "rating") {
       workouts.sort(
@@ -155,11 +120,6 @@ export default function MyPlanPage() {
   /* =========================================
      METRICS
      ========================================= */
-
-  /*
-   * Metrics always use the actual
-   * Plan/Saved list, not the sorted copy.
-   */
 
   const displayedWorkouts =
     activeTab === "plan"
@@ -188,11 +148,6 @@ export default function MyPlanPage() {
     workoutId: number
   ) => {
     setCompleted((current) => {
-      /*
-       * If already completed,
-       * clicking again will undo it.
-       */
-
       if (current.includes(workoutId)) {
         return current.filter(
           (id) => id !== workoutId
@@ -218,11 +173,6 @@ export default function MyPlanPage() {
     workoutId: number
   ) => {
     removeFromPlan(workoutId);
-
-    /*
-     * Also remove it from completed
-     * if it was marked as done.
-     */
 
     setCompleted((current) =>
       current.filter(
@@ -254,7 +204,7 @@ export default function MyPlanPage() {
   return (
     <main className="min-h-screen bg-black text-white">
 
-      <section className="mx-auto w-full max-w-[1184px] px-6 pb-20 pt-11 sm:px-8 lg:px-0">
+      <section className="mx-auto w-full max-w-[1184px] px-4 pb-20 pt-8 sm:px-6 sm:pt-10 md:px-8 lg:px-0 lg:pt-11">
 
         {/* =====================================
             PAGE HEADER
@@ -265,7 +215,7 @@ export default function MyPlanPage() {
             My Plan
           </h1>
 
-          <p className="mt-2 text-[13px] leading-5 text-[#9ca3af]">
+          <p className="mt-2 max-w-full text-[13px] leading-5 text-[#9ca3af]">
             Cap of five lifts for today. Finish them,
             then load more.
           </p>
@@ -275,49 +225,49 @@ export default function MyPlanPage() {
             METRICS
             ===================================== */}
 
-        <div className="mt-6 flex min-h-[122px] w-full items-center rounded-[15px] border border-[#29303b] bg-[#14171d] px-6 sm:px-8">
+        <div className="mt-6 flex min-h-[122px] w-full items-center rounded-[15px] border border-[#29303b] bg-[#14171d] px-4 sm:px-6 md:px-8">
 
           {/* EXERCISES */}
 
-          <div className="flex flex-1 flex-col justify-center">
+          <div className="flex min-w-0 flex-1 flex-col justify-center">
 
             <span className="text-[12px] text-[#8f96a3]">
               Exercises
             </span>
 
-            <span className="mt-2 text-[40px] font-black leading-none text-[#ccff00]">
+            <span className="mt-2 text-[32px] font-black leading-none text-[#ccff00] sm:text-[40px]">
               {displayedWorkouts.length}
             </span>
 
           </div>
 
-          <div className="h-[60px] w-px bg-[#252a33]" />
+          <div className="h-[60px] w-px shrink-0 bg-[#252a33]" />
 
           {/* MINUTES */}
 
-          <div className="flex flex-1 flex-col justify-center pl-6 sm:pl-8">
+          <div className="flex min-w-0 flex-1 flex-col justify-center pl-4 sm:pl-6 md:pl-8">
 
             <span className="text-[12px] text-[#8f96a3]">
               Minutes
             </span>
 
-            <span className="mt-2 text-[40px] font-black leading-none text-white">
+            <span className="mt-2 text-[32px] font-black leading-none text-white sm:text-[40px]">
               {totalMinutes}
             </span>
 
           </div>
 
-          <div className="h-[60px] w-px bg-[#252a33]" />
+          <div className="h-[60px] w-px shrink-0 bg-[#252a33]" />
 
           {/* CALORIES */}
 
-          <div className="flex flex-1 flex-col justify-center pl-6 sm:pl-8">
+          <div className="flex min-w-0 flex-1 flex-col justify-center pl-4 sm:pl-6 md:pl-8">
 
             <span className="text-[12px] text-[#8f96a3]">
               Calories
             </span>
 
-            <span className="mt-2 text-[40px] font-black leading-none text-white">
+            <span className="mt-2 text-[32px] font-black leading-none text-white sm:text-[40px]">
               {totalCalories}
             </span>
 
@@ -329,13 +279,13 @@ export default function MyPlanPage() {
             TABS + SORT
             ===================================== */}
 
-        <div className="mt-8 flex items-center justify-between gap-4">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
 
           {/* ===================================
               PLAN / SAVED TABS
               =================================== */}
 
-          <div className="flex h-[40px] items-center rounded-[8px] border border-[#29303b] bg-[#14171d] p-[3px]">
+          <div className="flex h-[40px] shrink-0 items-center rounded-[8px] border border-[#29303b] bg-[#14171d] p-[3px]">
 
             {/* TODAY'S PLAN */}
 
@@ -347,7 +297,7 @@ export default function MyPlanPage() {
                     ? "#ccff00"
                     : "#8f96a3",
               }}
-              className="flex h-full items-center rounded-[6px] px-5 text-[12px] font-semibold transition-colors hover:text-[#ccff00]"
+              className="flex h-full items-center rounded-[6px] px-4 text-[12px] font-semibold transition-colors hover:text-[#ccff00] sm:px-5"
             >
               Today&apos;s Plan
             </Link>
@@ -362,7 +312,7 @@ export default function MyPlanPage() {
                     ? "#ccff00"
                     : "#8f96a3",
               }}
-              className="flex h-full items-center rounded-[6px] px-5 text-[12px] font-semibold transition-colors hover:text-[#ccff00]"
+              className="flex h-full items-center rounded-[6px] px-4 text-[12px] font-semibold transition-colors hover:text-[#ccff00] sm:px-5"
             >
               Saved
             </Link>
@@ -373,7 +323,7 @@ export default function MyPlanPage() {
               SORT DROPDOWN
               =================================== */}
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
 
             <span className="hidden text-[12px] font-medium text-[#a1a1a1] sm:block">
               Sort By
@@ -384,7 +334,8 @@ export default function MyPlanPage() {
               <select
                 value={sortBy ?? ""}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const value =
+                    e.target.value;
 
                   if (!value) {
                     setSortBy(null);
@@ -398,13 +349,9 @@ export default function MyPlanPage() {
                 className="h-[36px] appearance-none rounded-[8px] border border-[#29303b] bg-[#14171d] pl-3 pr-9 text-[12px] text-white outline-none transition hover:border-[#3b4350] focus:border-[#ccff00]"
               >
 
-                {/* DEFAULT */}
-
                 <option value="">
                   Sort By
                 </option>
-
-                {/* OPTIONS */}
 
                 <option value="duration">
                   Duration
@@ -476,7 +423,7 @@ export default function MyPlanPage() {
                 return (
                   <div
                     key={workout.id}
-                    className={`flex min-h-[112px] items-center rounded-[15px] border bg-[#14171d] px-4 py-4 transition sm:px-4 ${
+                    className={`flex min-h-[112px] flex-col rounded-[15px] border bg-[#14171d] px-3 py-3 transition sm:flex-row sm:items-center sm:px-4 sm:py-4 ${
                       isCompleted
                         ? "border-[#39411f]"
                         : "border-[#29303b]"
@@ -484,82 +431,86 @@ export default function MyPlanPage() {
                   >
 
                     {/* =================================
-                        WORKOUT IMAGE
+                        TOP / IMAGE + INFORMATION
                         ================================= */}
 
-                    <div className="relative h-[80px] w-[145px] shrink-0 overflow-hidden rounded-[10px] bg-[#20242b]">
+                    <div className="flex min-w-0 flex-1 items-center">
 
-                      <Image
-                        src={workout.image}
-                        alt={workout.name}
-                        fill
-                        className={`object-cover ${
-                          isCompleted
-                            ? "grayscale"
-                            : ""
-                        }`}
-                        sizes="145px"
-                      />
+                      {/* WORKOUT IMAGE */}
 
-                    </div>
+                      <div className="relative h-[80px] w-[110px] shrink-0 overflow-hidden rounded-[10px] bg-[#20242b] sm:h-[80px] sm:w-[145px]">
 
-                    {/* =================================
-                        WORKOUT INFORMATION
-                        ================================= */}
+                        <Image
+                          src={workout.image}
+                          alt={workout.name}
+                          fill
+                          className={`object-cover ${
+                            isCompleted
+                              ? "grayscale"
+                              : ""
+                          }`}
+                          sizes="(max-width: 640px) 110px, 145px"
+                        />
 
-                    <div className="ml-4 min-w-0 flex-1">
+                      </div>
 
-                      <h2
-                        className={`truncate text-[16px] font-black uppercase leading-none ${
-                          isCompleted
-                            ? "text-[#777777] line-through"
-                            : "text-white"
-                        }`}
-                      >
-                        {workout.name}
-                      </h2>
+                      {/* WORKOUT INFORMATION */}
 
-                      <p className="mt-1.5 truncate text-[12px] text-[#8f96a3]">
-                        {workout.equipment}
-                      </p>
+                      <div className="ml-3 min-w-0 flex-1 sm:ml-4">
 
-                      {/* STATS */}
+                        <h2
+                          className={`truncate text-[15px] font-black uppercase leading-none sm:text-[16px] ${
+                            isCompleted
+                              ? "text-[#777777] line-through"
+                              : "text-white"
+                          }`}
+                        >
+                          {workout.name}
+                        </h2>
 
-                      <div className="mt-3 flex items-center gap-4">
+                        <p className="mt-1.5 truncate text-[12px] text-[#8f96a3]">
+                          {workout.equipment}
+                        </p>
 
-                        {/* DURATION */}
+                        {/* STATS */}
 
-                        <div className="flex items-center gap-1.5">
+                        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-4">
 
-                          <Clock3 className="h-[14px] w-[14px] text-[#ccff00]" />
+                          {/* DURATION */}
 
-                          <span className="text-[11px] text-[#c1c5cc]">
-                            {workout.duration} min
-                          </span>
+                          <div className="flex items-center gap-1.5">
 
-                        </div>
+                            <Clock3 className="h-[14px] w-[14px] shrink-0 text-[#ccff00]" />
 
-                        {/* CALORIES */}
+                            <span className="text-[11px] text-[#c1c5cc]">
+                              {workout.duration} min
+                            </span>
 
-                        <div className="flex items-center gap-1.5">
+                          </div>
 
-                          <Flame className="h-[14px] w-[14px] text-[#ccff00]" />
+                          {/* CALORIES */}
 
-                          <span className="text-[11px] text-[#c1c5cc]">
-                            {workout.caloriesBurned} kcal
-                          </span>
+                          <div className="flex items-center gap-1.5">
 
-                        </div>
+                            <Flame className="h-[14px] w-[14px] shrink-0 text-[#ccff00]" />
 
-                        {/* RATING */}
+                            <span className="text-[11px] text-[#c1c5cc]">
+                              {workout.caloriesBurned} kcal
+                            </span>
 
-                        <div className="flex items-center gap-1.5">
+                          </div>
 
-                          <Star className="h-[14px] w-[14px] text-[#ccff00]" />
+                          {/* RATING */}
 
-                          <span className="text-[11px] text-[#c1c5cc]">
-                            {workout.rating}
-                          </span>
+                          <div className="flex items-center gap-1.5">
+
+                            <Star className="h-[14px] w-[14px] shrink-0 text-[#ccff00]" />
+
+                            <span className="text-[11px] text-[#c1c5cc]">
+                              {workout.rating}
+                            </span>
+
+                          </div>
 
                         </div>
 
@@ -571,7 +522,7 @@ export default function MyPlanPage() {
                         ACTION BUTTONS
                         ================================= */}
 
-                    <div className="ml-4 flex shrink-0 items-center gap-3">
+                    <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[#252a33] pt-3 sm:ml-4 sm:mt-0 sm:justify-start sm:gap-3 sm:border-t-0 sm:pt-0">
 
                       {/* VIEW DETAILS */}
 
@@ -592,7 +543,7 @@ export default function MyPlanPage() {
                               workout.id
                             )
                           }
-                          className={`flex h-[35px] items-center justify-center gap-2 rounded-full px-5 text-[11px] font-semibold transition ${
+                          className={`flex h-[35px] items-center justify-center gap-2 rounded-full px-4 text-[11px] font-semibold transition sm:px-5 ${
                             isCompleted
                               ? "bg-[#292d34] text-[#9ca3af]"
                               : "bg-[#ccff00] text-black hover:bg-[#bfff00]"
@@ -624,7 +575,7 @@ export default function MyPlanPage() {
                               )
                         }
                         aria-label="Remove workout"
-                        className="flex h-8 w-8 items-center justify-center text-[#6f7784] transition hover:text-red-400"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center text-[#6f7784] transition hover:text-red-400"
                       >
                         <X className="h-[18px] w-[18px]" />
                       </button>
@@ -646,12 +597,12 @@ export default function MyPlanPage() {
           ===================================== */}
 
       {toast && (
-        <div className="fixed right-5 top-[88px] z-[100] flex items-center gap-3 rounded-[8px] border border-[#29303b] bg-[#181b21] px-5 py-3 shadow-2xl sm:right-8">
+        <div className="fixed right-3 top-[88px] z-[100] flex max-w-[calc(100vw-24px)] items-center gap-3 rounded-[8px] border border-[#29303b] bg-[#181b21] px-4 py-3 shadow-2xl sm:right-8 sm:px-5">
 
           {toastType === "success" ? (
-            <Check className="h-4 w-4 text-[#ccff00]" />
+            <Check className="h-4 w-4 shrink-0 text-[#ccff00]" />
           ) : (
-            <X className="h-4 w-4 text-red-400" />
+            <X className="h-4 w-4 shrink-0 text-red-400" />
           )}
 
           <p className="text-[12px] text-white">

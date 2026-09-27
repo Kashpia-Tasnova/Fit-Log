@@ -17,7 +17,12 @@ export default function Navbar() {
   const isWorkoutPage =
     pathname === "/" || pathname.startsWith("/workout/");
 
-  const isMyPlanPage = pathname === "/my-plan";
+  const isMyPlanPage =
+    pathname === "/my-plan";
+
+  /* =========================================
+     WORKOUTS NAVIGATION
+     ========================================= */
 
   const handleWorkoutClick = (
     e: React.MouseEvent<HTMLAnchorElement>
@@ -25,7 +30,8 @@ export default function Navbar() {
     e.preventDefault();
 
     if (pathname === "/") {
-      const library = document.getElementById("library");
+      const library =
+        document.getElementById("library");
 
       if (library) {
         library.scrollIntoView({
@@ -38,12 +44,17 @@ export default function Navbar() {
     }
   };
 
+  /* =========================================
+     HANDLE /#library ON PAGE LOAD
+     ========================================= */
+
   useEffect(() => {
     if (
       pathname === "/" &&
       window.location.hash === "#library"
     ) {
-      const library = document.getElementById("library");
+      const library =
+        document.getElementById("library");
 
       if (library) {
         setTimeout(() => {
@@ -58,9 +69,13 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#222222] bg-[#0b0b0b]/95 backdrop-blur">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6 lg:px-8">
 
-        {/* LOGO */}
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:gap-5 sm:px-6 lg:gap-6 lg:px-8">
+
+        {/* =====================================
+            LOGO
+            ===================================== */}
+
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2"
@@ -74,19 +89,23 @@ export default function Navbar() {
             priority
           />
 
-          <span className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+          <span className="text-lg font-semibold tracking-tight text-white sm:text-xl lg:text-2xl">
             FITLOG
           </span>
         </Link>
 
-        {/* MAIN NAVIGATION */}
-        <nav className="flex items-center gap-5 sm:gap-8">
+        {/* =====================================
+            MAIN NAVIGATION
+            ===================================== */}
+
+        <nav className="flex items-center gap-4 sm:gap-7 lg:gap-8">
 
           {/* WORKOUTS */}
+
           <a
             href="/#library"
             onClick={handleWorkoutClick}
-            className="text-xs font-bold tracking-wider transition sm:text-sm"
+            className="text-[11px] font-bold tracking-wider transition sm:text-xs lg:text-sm"
             style={{
               color: isWorkoutPage
                 ? "#ccff00"
@@ -97,9 +116,10 @@ export default function Navbar() {
           </a>
 
           {/* MY PLAN */}
+
           <Link
             href="/my-plan"
-            className="text-xs font-bold tracking-wider transition sm:text-sm"
+            className="text-[11px] font-bold tracking-wider transition sm:text-xs lg:text-sm"
             style={{
               color: isMyPlanPage
                 ? "#ccff00"
@@ -111,20 +131,23 @@ export default function Navbar() {
 
         </nav>
 
-        {/* PLAN + SAVED */}
-        <div className="flex shrink-0 items-center gap-4">
+        {/* =====================================
+            PLAN + SAVED
+            ===================================== */}
+
+        <div className="flex shrink-0 items-center gap-2 sm:gap-4">
 
           {/* PLAN */}
 
           <Link
             href="/my-plan"
-            className="flex items-center gap-2 text-xs font-bold tracking-wider sm:text-sm"
+            className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider sm:gap-2 sm:text-xs lg:text-sm"
           >
             <span className="text-[#a1a1a1]">
               Plan
             </span>
 
-            <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#ccff00] px-1.5 text-xs font-bold !text-black">
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ccff00] px-1 text-[10px] font-bold !text-black sm:h-6 sm:min-w-6 sm:px-1.5 sm:text-xs">
               {plan.length}
             </span>
           </Link>
@@ -133,18 +156,19 @@ export default function Navbar() {
 
           <Link
             href="/my-plan?tab=saved"
-            className="flex items-center gap-2 text-xs font-bold tracking-wider sm:text-sm"
+            className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider sm:gap-2 sm:text-xs lg:text-sm"
           >
             <span className="text-[#a1a1a1]">
               Saved
             </span>
 
-            <span className="flex h-6 min-w-6 items-center justify-center rounded-full border border-[#a1a1a1] bg-[#0b0b0b] px-1.5 text-xs font-bold !text-[#a1a1a1]">
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full border border-[#a1a1a1] bg-[#0b0b0b] px-1 text-[10px] font-bold !text-[#a1a1a1] sm:h-6 sm:min-w-6 sm:px-1.5 sm:text-xs">
               {saved.length}
             </span>
           </Link>
 
         </div>
+
       </div>
     </header>
   );
